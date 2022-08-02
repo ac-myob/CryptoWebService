@@ -1,4 +1,4 @@
-namespace CryptoWebService.Infrastructure.Repositories;
+namespace CryptoWebService.Application.Abstractions;
 
 public interface IRepository<T>
 {

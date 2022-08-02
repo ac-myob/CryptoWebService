@@ -1,4 +1,5 @@
-﻿using CryptoWebService.Domain.Models;
+﻿using CryptoWebService.Application.Abstractions;
+using CryptoWebService.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CryptoWebService.Infrastructure.Repositories;
