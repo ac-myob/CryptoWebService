@@ -1,50 +1,59 @@
 ﻿using CryptoWebService.Application.Abstractions;
 using CryptoWebService.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using Transaction = System.Transactions.Transaction;
 
 namespace CryptoWebService.Infrastructure.Repositories;
 
-public class CoinRepository : IRepository<Coin>
+public class CoinRepository : ICoinRepository
 {
-    private readonly DataContext _dataContext;
-
-    public CoinRepository(DataContext dataContext)
+    public Task<IEnumerable<Coin>> GetAllCoinsAsync()
     {
-        _dataContext = dataContext;
-    }
-    
-    public void Create(Coin entity)
-    {
-        _dataContext.Add(entity);
-        _dataContext.SaveChanges();
+        throw new NotImplementedException();
     }
 
-    public IEnumerable<Coin> ReadAll()
+    public Task<Coin> GetCoinByIdAsync(int coinId)
     {
-        return _dataContext.Coins;
+        throw new NotImplementedException();
     }
 
-    public Coin? Read(int id)
+    public Task CreateCoinAsync(Coin coin)
     {
-        return _dataContext.Coins.Find(id);
+        throw new NotImplementedException();
     }
 
-    public void Update(Coin entity)
+    public Task UpdateCoinAsync(Coin updatedCoin)
     {
-        _dataContext.Entry(entity).State = EntityState.Modified;
-        _dataContext.SaveChanges();
+        throw new NotImplementedException();
     }
 
-    public bool Delete(int id)
+    public Task DeleteCoinAsync(int coinId)
     {
-        var transactionToRemove = Read(id);
+        throw new NotImplementedException();
+    }
 
-        if (transactionToRemove == null)
-            return false;
-        
-        _dataContext.Remove(transactionToRemove);
-        _dataContext.SaveChanges();
+    public Task<IEnumerable<Transaction>> GetCoinTransactionsAsync(int coinId)
+    {
+        throw new NotImplementedException();
+    }
 
-        return true; 
+    public Task<Transaction> GetCoinTransactionAsync(int coinId, int transactionId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task CreateCoinTransactionAsync(int coinId, Transaction transaction)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task UpdateCoinTransactionAsync(int coinId, Transaction transaction)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task DeleteCoinTransactionAsync(int coinId, int transactionId)
+    {
+        throw new NotImplementedException();
     }
 }
