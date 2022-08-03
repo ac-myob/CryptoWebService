@@ -6,8 +6,8 @@ namespace CryptoWebService.Application.Abstractions;
 public interface ICoinRepository
 { 
     Task<IEnumerable<Coin>> GetAllCoinsAsync();
-    Task<Coin> GetCoinByIdAsync(int coinId);
-    Task CreateCoinAsync(Coin coin);
+    Task<Coin?> GetCoinByIdAsync(int coinId);
+    Task<Coin> CreateCoinAsync(Coin coin);
     Task UpdateCoinAsync(Coin updatedCoin);
     Task DeleteCoinAsync(int coinId);
     
