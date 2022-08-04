@@ -1,14 +1,20 @@
-using Microsoft.Extensions.DependencyInjection;
+using CryptoWebService.Application.Abstractions;
+using CryptoWebService.Infrastructure;
+using CryptoWebService.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<ICoinRepository, CoinRepository>();
 builder.Services.AddAutoMapper(typeof(Program));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<DataContext>(options => options.UseSqlite(connectionString));
 
 var app = builder.Build();
 

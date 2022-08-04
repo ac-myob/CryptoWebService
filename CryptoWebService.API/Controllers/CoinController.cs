@@ -1,7 +1,6 @@
 using AutoMapper;
 using CryptoWebService.API.Dtos;
 using CryptoWebService.Application.Abstractions;
-using CryptoWebService.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CryptoWebService.API.Controllers;
