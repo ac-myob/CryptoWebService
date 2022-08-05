@@ -43,11 +43,11 @@ public class CoinController : Controller
     [HttpPost]
     public async Task<ActionResult<Coin>> CreateCoin(CoinPostPutDto coinPostPutDto)
     {
-        var coin = _mapper.Map<Coin>(coinPostPutDto);
-        await _coinRepository.CreateCoinAsync(coin);
-        var coinGetDto = _mapper.Map<CoinGetDto>(coin);
+        var newCoin = _mapper.Map<Coin>(coinPostPutDto); 
+        await _coinRepository.CreateCoinAsync(newCoin);
+        var newCoinGetDto = _mapper.Map<CoinGetDto>(newCoin);
 
-        return CreatedAtAction(nameof(GetCoinById), new {id = coin.Id}, coinGetDto);
+        return CreatedAtAction(nameof(GetCoinById), new {id = newCoinGetDto.Id}, newCoinGetDto);
     }
 
     [HttpDelete]

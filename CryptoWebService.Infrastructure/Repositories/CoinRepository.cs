@@ -22,12 +22,10 @@ public class CoinRepository : ICoinRepository
         return await _dataContext.Coins.FindAsync(coinId);
     }
 
-    public async Task<Coin> CreateCoinAsync(Coin coin)
+    public async Task CreateCoinAsync(Coin coin)
     {
         _dataContext.Add(coin);
         await _dataContext.SaveChangesAsync();
-
-        return coin;
     }
 
     public async Task<Coin?> UpdateCoinAsync(Coin updatedCoin)
