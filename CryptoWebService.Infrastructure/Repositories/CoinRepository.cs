@@ -28,27 +28,27 @@ public class CoinRepository : ICoinRepository
         await _dataContext.SaveChangesAsync();
     }
 
-    public async Task<Coin?> UpdateCoinAsync(Coin updatedCoin)
+    public async Task<bool> UpdateCoinAsync(Coin updatedCoin)
     {
         if (await GetCoinByIdAsync(updatedCoin.Id) == null)
-            return null;
+            return false;
         
         _dataContext.Coins.Update(updatedCoin);
         await _dataContext.SaveChangesAsync();
 
-        return updatedCoin;
+        return true;
     }
 
-    public async Task<Coin?> DeleteCoinAsync(int coinId)
+    public async Task<bool> DeleteCoinAsync(int coinId)
     {
         var coinToDelete = await _dataContext.Coins.FindAsync(coinId);
 
         if (coinToDelete == null)
-            return null;
+            return false;
 
         _dataContext.Remove(coinToDelete);
         await _dataContext.SaveChangesAsync();
 
-        return coinToDelete;
+        return true;
     }
 }

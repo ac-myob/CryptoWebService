@@ -8,6 +8,6 @@ public interface ICoinRepository
     Task<IEnumerable<Coin>> GetAllCoinsAsync();
     Task<Coin?> GetCoinByIdAsync(int coinId);
     Task CreateCoinAsync(Coin coin);
-    Task<Coin?> UpdateCoinAsync(Coin updatedCoin);
-    Task<Coin?> DeleteCoinAsync(int coinId);
+    Task<bool> UpdateCoinAsync(Coin updatedCoin);
+    Task<bool> DeleteCoinAsync(int coinId);
 }
