@@ -30,8 +30,11 @@ public class CoinRepository : ICoinRepository
         return coin;
     }
 
-    public async Task<Coin> UpdateCoinAsync(Coin updatedCoin)
+    public async Task<Coin?> UpdateCoinAsync(Coin updatedCoin)
     {
+        if (await GetCoinByIdAsync(updatedCoin.Id) == null)
+            return null;
+        
         _dataContext.Coins.Update(updatedCoin);
         await _dataContext.SaveChangesAsync();
 

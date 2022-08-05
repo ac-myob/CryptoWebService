@@ -37,9 +37,10 @@ public class CoinController : Controller
             return NotFound();
 
         var coinGetDto = _mapper.Map<CoinGetDto>(coin);
-        return coinGetDto;
+        return Ok(coinGetDto);
     }
 
+    [HttpPost]
     public async Task<ActionResult<Coin>> CreateCoin(CoinPostPutDto coinPostPutDto)
     {
         var coin = _mapper.Map<Coin>(coinPostPutDto);
@@ -47,5 +48,25 @@ public class CoinController : Controller
         var coinGetDto = _mapper.Map<CoinGetDto>(coin);
 
         return CreatedAtAction(nameof(GetCoinById), new {id = coin.Id}, coinGetDto);
+    }
+
+    [HttpDelete]
+    [Route("{id:int}")]
+    public async Task<ActionResult<Coin>> DeleteCoin(int id)
+    {
+        var hotel = await _coinRepository.DeleteCoinAsync(id);
+
+        return hotel != null ? NoContent() : NotFound();
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<Coin>> UpdateCoin(int id, [FromBody] CoinPostPutDto coinPostPutDto)
+    {
+        var coinToUpdate = _mapper.Map<Coin>(coinPostPutDto);
+        coinToUpdate.Id = id;
+
+        var updateResult = await _coinRepository.UpdateCoinAsync(coinToUpdate);
+
+        return updateResult != null ? Ok(updateResult) : NotFound();
     }
 }
