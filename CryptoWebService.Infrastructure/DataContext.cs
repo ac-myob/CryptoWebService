@@ -1,6 +1,5 @@
 using CryptoWebService.Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using Transaction = System.Transactions.Transaction;
 
 namespace CryptoWebService.Infrastructure;
 
