@@ -25,26 +25,35 @@ public class UserController : Controller
        return Ok(await _userRepository.GetAllUsersAsync());
     }    
     
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<User?>> GetUserById(int id)
+    [HttpGet("{userId:int}")]
+    public async Task<ActionResult<User?>> GetUserById(int userId)
     {
-        var user = await _userRepository.GetUserByIdAsync(id);
-
-        if (user == null)
+        var user = await _userRepository.GetUserByIdAsync(userId);
+        if (user == null) 
             return NotFound();
-
         var userGetDto = _mapper.Map<UserGetDto>(user);
 
         return Ok(userGetDto);
     }
 
     [HttpPost]
-    public async Task<ActionResult<User>> CreateUser(UserPostPutDto userPostPutDto)
+    public async Task<ActionResult<User>> CreateUser(UserPostPutDto userPostDto)
     {
-        var newUser = _mapper.Map<User>(userPostPutDto);
-        await _userRepository.CreateUserAsync(newUser);
-        var newUserGetDto = _mapper.Map<UserGetDto>(newUser);
+        var userDomain = _mapper.Map<User>(userPostDto);
+        await _userRepository.CreateUserAsync(userDomain);
+        var userGetDto = _mapper.Map<UserGetDto>(userDomain);
 
-        return CreatedAtAction(nameof(GetUserById), new {id = newUserGetDto.Id}, newUserGetDto);
+        return CreatedAtAction(nameof(GetUserById), new {id = userGetDto.Id}, userGetDto);
+    }
+
+    [HttpPut("{userId:int}")]
+    public async Task<ActionResult<User>> UpdateUser(int userId, UserPostPutDto userPutDto)
+    {
+        var userDomain = _mapper.Map<User>(userPutDto);
+        userDomain.Id = userId;
+        var updateIsSuccessful = await _userRepository.UpdateUserAsync(userDomain);
+        var userGetDto = _mapper.Map<UserGetDto>(userDomain);
+
+        return updateIsSuccessful ? Ok(userGetDto) : BadRequest();
     }
 }

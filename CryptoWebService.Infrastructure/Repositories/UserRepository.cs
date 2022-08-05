@@ -29,28 +29,28 @@ public class UserRepository : IUserRepository
         await _dataContext.SaveChangesAsync();
     }
 
-    public async Task<User?> UpdateUserAsync(User updatedUser)
+    public async Task<bool> UpdateUserAsync(User updatedUser)
     {
         if (await _dataContext.Users.FindAsync(updatedUser) == null)
-            return null;
+            return false;
         
         _dataContext.Users.Update(updatedUser);
         await _dataContext.SaveChangesAsync();
 
-        return updatedUser;
+        return true;
     }
 
-    public async Task<User?> DeleteUserAsync(int userId)
+    public async Task<bool> DeleteUserAsync(int userId)
     {
         var userToDelete = await _dataContext.Users.FindAsync(userId);
 
         if (userToDelete == null)
-            return null;
+            return false;
 
         _dataContext.Users.Remove(userToDelete);
         await _dataContext.SaveChangesAsync();
 
-        return userToDelete;
+        return true;
     }
 
     public async Task<IEnumerable<Transaction>> GetUserTransactionsAsync(int userId)
