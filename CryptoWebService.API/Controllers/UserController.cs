@@ -37,4 +37,14 @@ public class UserController : Controller
 
         return Ok(userGetDto);
     }
+
+    [HttpPost]
+    public async Task<ActionResult<User>> CreateUser(UserPostPutDto userPostPutDto)
+    {
+        var newUser = _mapper.Map<User>(userPostPutDto);
+        await _userRepository.CreateUserAsync(newUser);
+        var newUserGetDto = _mapper.Map<UserGetDto>(newUser);
+
+        return CreatedAtAction(nameof(GetUserById), new {id = newUserGetDto.Id}, newUserGetDto);
+    }
 }

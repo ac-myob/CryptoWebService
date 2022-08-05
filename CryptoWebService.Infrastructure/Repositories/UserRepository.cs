@@ -23,16 +23,17 @@ public class UserRepository : IUserRepository
         return await _dataContext.Users.FindAsync(userId);
     }
 
-    public async Task<User> CreateUserAsync(User user)
+    public async Task CreateUserAsync(User user)
     {
         _dataContext.Add(user);
         await _dataContext.SaveChangesAsync();
-
-        return user;
     }
 
-    public async Task<User> UpdateUserAsync(User updatedUser)
+    public async Task<User?> UpdateUserAsync(User updatedUser)
     {
+        if (await _dataContext.Users.FindAsync(updatedUser) == null)
+            return null;
+        
         _dataContext.Users.Update(updatedUser);
         await _dataContext.SaveChangesAsync();
 
