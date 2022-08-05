@@ -46,7 +46,7 @@ public class UserController : Controller
         await _userRepository.CreateUserAsync(userDomain);
         var userGetDto = _mapper.Map<UserGetDto>(userDomain);
 
-        return CreatedAtAction(nameof(GetUserById), new {id = userGetDto.Id}, userGetDto);
+        return CreatedAtAction(nameof(GetUserById), new {userId = userGetDto.Id}, userGetDto);
     }
 
     [HttpPut("{userId:int}")]
