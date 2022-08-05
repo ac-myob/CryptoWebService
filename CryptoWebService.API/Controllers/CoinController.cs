@@ -1,6 +1,7 @@
 using AutoMapper;
 using CryptoWebService.API.Dtos;
 using CryptoWebService.Application.Abstractions;
+using CryptoWebService.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CryptoWebService.API.Controllers;
@@ -37,5 +38,14 @@ public class CoinController : Controller
 
         var coinGetDto = _mapper.Map<CoinGetDto>(coin);
         return coinGetDto;
+    }
+
+    public async Task<ActionResult<Coin>> CreateCoin(CoinPostPutDto coinPostPutDto)
+    {
+        var coin = _mapper.Map<Coin>(coinPostPutDto);
+        await _coinRepository.CreateCoinAsync(coin);
+        var coinGetDto = _mapper.Map<CoinGetDto>(coin);
+
+        return CreatedAtAction(nameof(GetCoinById), new {id = coin.Id}, coinGetDto);
     }
 }
