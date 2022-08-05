@@ -13,8 +13,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<ICoinRepository, CoinRepository>();
 builder.Services.AddAutoMapper(typeof(Program));
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<DataContext>(options => options.UseSqlite(connectionString));
+builder.Services.AddDbContext<DataContext>(options => 
+    options.UseNpgsql("Server=localhost;Port=5432;Database=CryptoDatabase;User Id=Andrew.Christabel;Password=;"));
+
 
 var app = builder.Build();
 
