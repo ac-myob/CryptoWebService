@@ -10,4 +10,5 @@ public class DataContext : DbContext
 
     public DbSet<Coin> Coins { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<User> Users { get; set; }
 }
