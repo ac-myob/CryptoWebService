@@ -28,10 +28,10 @@ public class CoinController : Controller
         return Ok(coinsGetDto);
     }
     
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<CoinGetDto>> GetCoinById(int id)
+    [HttpGet("{coinId:int}")]
+    public async Task<ActionResult<CoinGetDto>> GetCoinById(int coinId)
     {
-        var coin = await _coinRepository.GetCoinByIdAsync(id);
+        var coin = await _coinRepository.GetCoinByIdAsync(coinId);
 
         if (coin == null)
             return NotFound();
@@ -47,28 +47,26 @@ public class CoinController : Controller
         await _coinRepository.CreateCoinAsync(coinDomain);
         var coinGetDto = _mapper.Map<CoinGetDto>(coinDomain);
 
-        return CreatedAtAction(nameof(GetCoinById), new {id = coinGetDto.Id}, coinGetDto);
+        return CreatedAtAction(nameof(GetCoinById), new {coinId = coinGetDto.Id}, coinGetDto);
     }
 
     [HttpDelete]
-    [Route("{id:int}")]
-    public async Task<ActionResult> DeleteCoin(int id)
+    [Route("{coinId:int}")]
+    public async Task<ActionResult> DeleteCoin(int coinId)
     {
-        var deleteIsSuccessful = await _coinRepository.DeleteCoinAsync(id);
+        var deleteIsSuccessful = await _coinRepository.DeleteCoinAsync(coinId);
 
         return deleteIsSuccessful ? NoContent() : NotFound();
     }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult<CoinGetDto>> UpdateCoin(int id, [FromBody] CoinPostPutDto coinPutDto)
+    [HttpPut("{coinId:int}")]
+    public async Task<ActionResult<CoinGetDto>> UpdateCoin(int coinId, [FromBody] CoinPostPutDto coinPutDto)
     {
         var coinDomain = _mapper.Map<Coin>(coinPutDto);
-        coinDomain.Id = id;
-
+        coinDomain.Id = coinId;
         var updateIsSuccessful = await _coinRepository.UpdateCoinAsync(coinDomain);
-
         var coinGetDto = _mapper.Map<CoinGetDto>(coinDomain);
 
-        return updateIsSuccessful ? Ok(coinGetDto) : NotFound();
+        return updateIsSuccessful ? Ok(coinGetDto) : BadRequest();
     }
 }
