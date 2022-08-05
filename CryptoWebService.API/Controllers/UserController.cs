@@ -67,4 +67,22 @@ public class UserController : Controller
 
         return deleteIsSuccessful ? NoContent() : NotFound();
     }
+
+    [HttpGet("{userId:int}/transactions")]
+    public async Task<ActionResult<IEnumerable<TransactionGetDto>>> GetUserTransactions(int userId)
+    {
+        var transactionDomains = await _userRepository.GetUserTransactionsAsync(userId);
+        var transactionGetDtos = _mapper.Map<IEnumerable<TransactionGetDto>>(transactionDomains);
+        
+        return Ok(transactionGetDtos);
+    }
+    
+    [HttpGet("{userId:int}/transactions/{transactionId:int}")]
+    public async Task<ActionResult<IEnumerable<TransactionGetDto>>> GetUserTransactions(int userId, int transactionId)
+    {
+        var transactionDomain = await _userRepository.GetUserTransactionAsync(userId, transactionId);
+        var transactionGetDto = _mapper.Map<TransactionGetDto>(transactionDomain);
+        
+        return Ok(transactionGetDto);
+    }
 }
