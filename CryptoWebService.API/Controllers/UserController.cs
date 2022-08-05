@@ -56,4 +56,12 @@ public class UserController : Controller
 
         return updateIsSuccessful ? Ok(userGetDto) : BadRequest();
     }
+
+    [HttpDelete]
+    public async Task<ActionResult> DeleteUser(int userId)
+    {
+        var deleteIsSuccessful = await _userRepository.DeleteUserAsync(userId);
+
+        return deleteIsSuccessful ? NoContent() : NotFound();
+    }
 }
