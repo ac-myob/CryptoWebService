@@ -23,18 +23,32 @@ public class CoinRepository : ICoinRepository
         return await _dataContext.Coins.FindAsync(coinId);
     }
 
-    public Task<Coin> CreateCoinAsync(Coin coin)
+    public async Task<Coin> CreateCoinAsync(Coin coin)
     {
-        throw new NotImplementedException();
+        _dataContext.Add(coin);
+        await _dataContext.SaveChangesAsync();
+
+        return coin;
     }
 
-    public Task UpdateCoinAsync(Coin updatedCoin)
+    public async Task<Coin> UpdateCoinAsync(Coin updatedCoin)
     {
-        throw new NotImplementedException();
+        _dataContext.Coins.Update(updatedCoin);
+        await _dataContext.SaveChangesAsync();
+
+        return updatedCoin;
     }
 
-    public Task DeleteCoinAsync(int coinId)
+    public async Task<Coin?> DeleteCoinAsync(int coinId)
     {
-        throw new NotImplementedException();
+        var coinToDelete = await _dataContext.Coins.FindAsync(coinId);
+
+        if (coinToDelete == null)
+            return null;
+
+        _dataContext.Remove(coinToDelete);
+        await _dataContext.SaveChangesAsync();
+
+        return coinToDelete;
     }
 }
