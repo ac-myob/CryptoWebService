@@ -20,13 +20,16 @@ public class UserController : Controller
     }
 
     [HttpGet]
-    public async Task<ActionResult> GetAllUsers()
+    public async Task<ActionResult<IEnumerable<UserGetDto>>> GetAllUsers()
     {
-       return Ok(await _userRepository.GetAllUsersAsync());
+        var users = await _userRepository.GetAllUsersAsync();
+        var userGetDtos = _mapper.Map<IEnumerable<CoinGetDto>>(users);
+
+        return Ok(userGetDtos);
     }    
     
     [HttpGet("{userId:int}")]
-    public async Task<ActionResult<User?>> GetUserById(int userId)
+    public async Task<ActionResult<UserGetDto?>> GetUserById(int userId)
     {
         var user = await _userRepository.GetUserByIdAsync(userId);
         if (user == null) 
@@ -37,7 +40,7 @@ public class UserController : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult<User>> CreateUser(UserPostPutDto userPostDto)
+    public async Task<ActionResult<UserGetDto>> CreateUser(UserPostPutDto userPostDto)
     {
         var userDomain = _mapper.Map<User>(userPostDto);
         await _userRepository.CreateUserAsync(userDomain);
@@ -47,7 +50,7 @@ public class UserController : Controller
     }
 
     [HttpPut("{userId:int}")]
-    public async Task<ActionResult<User>> UpdateUser(int userId, UserPostPutDto userPutDto)
+    public async Task<ActionResult<UserGetDto>> UpdateUser(int userId, UserPostPutDto userPutDto)
     {
         var userDomain = _mapper.Map<User>(userPutDto);
         userDomain.Id = userId;
