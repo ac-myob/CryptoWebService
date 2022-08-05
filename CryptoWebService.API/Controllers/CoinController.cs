@@ -23,7 +23,7 @@ public class CoinController : Controller
     public async Task<ActionResult<IEnumerable<CoinGetDto>>> GetAllCoins()
     {
         var coins = await _coinRepository.GetAllCoinsAsync();
-        var coinsGetDto = _mapper.Map<List<CoinGetDto>>(coins);
+        var coinsGetDto = _mapper.Map<IEnumerable<CoinGetDto>>(coins);
 
         return Ok(coinsGetDto);
     }
@@ -41,18 +41,18 @@ public class CoinController : Controller
     }
 
     [HttpPost]
-    public async Task<ActionResult<Coin>> CreateCoin(CoinPostPutDto coinPostPutDto)
+    public async Task<ActionResult<CoinGetDto>> CreateCoin(CoinPostPutDto coinPostDto)
     {
-        var newCoin = _mapper.Map<Coin>(coinPostPutDto); 
-        await _coinRepository.CreateCoinAsync(newCoin);
-        var newCoinGetDto = _mapper.Map<CoinGetDto>(newCoin);
+        var coinDomain = _mapper.Map<Coin>(coinPostDto); 
+        await _coinRepository.CreateCoinAsync(coinDomain);
+        var coinGetDto = _mapper.Map<CoinGetDto>(coinDomain);
 
-        return CreatedAtAction(nameof(GetCoinById), new {id = newCoinGetDto.Id}, newCoinGetDto);
+        return CreatedAtAction(nameof(GetCoinById), new {id = coinGetDto.Id}, coinGetDto);
     }
 
     [HttpDelete]
     [Route("{id:int}")]
-    public async Task<ActionResult<Coin>> DeleteCoin(int id)
+    public async Task<ActionResult> DeleteCoin(int id)
     {
         var deleteIsSuccessful = await _coinRepository.DeleteCoinAsync(id);
 
@@ -60,13 +60,15 @@ public class CoinController : Controller
     }
 
     [HttpPut("{id:int}")]
-    public async Task<ActionResult<Coin>> UpdateCoin(int id, [FromBody] CoinPostPutDto coinPostPutDto)
+    public async Task<ActionResult<CoinGetDto>> UpdateCoin(int id, [FromBody] CoinPostPutDto coinPutDto)
     {
-        var coinToUpdate = _mapper.Map<Coin>(coinPostPutDto);
-        coinToUpdate.Id = id;
+        var coinDomain = _mapper.Map<Coin>(coinPutDto);
+        coinDomain.Id = id;
 
-        var updateIsSuccessful = await _coinRepository.UpdateCoinAsync(coinToUpdate);
+        var updateIsSuccessful = await _coinRepository.UpdateCoinAsync(coinDomain);
 
-        return updateIsSuccessful ? Ok(updateIsSuccessful) : NotFound();
+        var coinGetDto = _mapper.Map<CoinGetDto>(coinDomain);
+
+        return updateIsSuccessful ? Ok(coinGetDto) : NotFound();
     }
 }
