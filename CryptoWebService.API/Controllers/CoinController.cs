@@ -54,9 +54,9 @@ public class CoinController : Controller
     [Route("{id:int}")]
     public async Task<ActionResult<Coin>> DeleteCoin(int id)
     {
-        var hotel = await _coinRepository.DeleteCoinAsync(id);
+        var deleteIsSuccessful = await _coinRepository.DeleteCoinAsync(id);
 
-        return hotel != null ? NoContent() : NotFound();
+        return deleteIsSuccessful ? NoContent() : NotFound();
     }
 
     [HttpPut("{id:int}")]
@@ -65,8 +65,8 @@ public class CoinController : Controller
         var coinToUpdate = _mapper.Map<Coin>(coinPostPutDto);
         coinToUpdate.Id = id;
 
-        var updateResult = await _coinRepository.UpdateCoinAsync(coinToUpdate);
+        var updateIsSuccessful = await _coinRepository.UpdateCoinAsync(coinToUpdate);
 
-        return updateResult != null ? Ok(updateResult) : NotFound();
+        return updateIsSuccessful ? Ok(updateIsSuccessful) : NotFound();
     }
 }
