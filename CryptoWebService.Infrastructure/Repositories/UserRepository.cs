@@ -15,12 +15,12 @@ public class UserRepository : IUserRepository
     
     public async Task<IEnumerable<User>> GetAllUsersAsync()
     {
-        return await _dataContext.Users.ToListAsync();
+        return await _dataContext.Users.AsNoTracking().ToListAsync();
     }
 
     public async Task<User?> GetUserByIdAsync(int userId)
     {
-        return await _dataContext.Users.FindAsync(userId);
+        return await _dataContext.Users.AsNoTracking().SingleOrDefaultAsync(u => u.Id == userId);
     }
 
     public async Task CreateUserAsync(User user)
@@ -31,9 +31,11 @@ public class UserRepository : IUserRepository
 
     public async Task<bool> UpdateUserAsync(User updatedUser)
     {
-        if (await _dataContext.Users.FindAsync(updatedUser) == null)
-            return false;
+        var userToUpdate = await GetUserByIdAsync(updatedUser.Id);
         
+        if (userToUpdate == null)
+            return false;
+
         _dataContext.Users.Update(updatedUser);
         await _dataContext.SaveChangesAsync();
 
@@ -42,7 +44,7 @@ public class UserRepository : IUserRepository
 
     public async Task<bool> DeleteUserAsync(int userId)
     {
-        var userToDelete = await _dataContext.Users.FindAsync(userId);
+        var userToDelete = await GetUserByIdAsync(userId);
 
         if (userToDelete == null)
             return false;
@@ -55,28 +57,29 @@ public class UserRepository : IUserRepository
 
     public async Task<IEnumerable<Transaction>> GetUserTransactionsAsync(int userId)
     {
-        return await _dataContext.Transactions.Where(t => t.UserId == userId).ToListAsync();
+        return await _dataContext.Transactions.AsNoTracking().Where(t => t.UserId == userId).ToListAsync();
     }
 
     public async Task<Transaction?> GetUserTransactionAsync(int userId, int transactionId)
     {
         return await _dataContext.Transactions
+            .AsNoTracking()
             .SingleOrDefaultAsync(t => t.UserId == userId && t.Id == transactionId);
     }
 
-    public async Task<Transaction?> CreateUserTransactionAsync(int userId, Transaction transaction)
+    public async Task<bool> CreateUserTransactionAsync(int userId, Transaction transaction)
     {
         var user = await _dataContext.Users
             .Include(u => u.Transactions)
             .SingleOrDefaultAsync(u => u.Id == userId);
 
         if (user == null)
-            return null;
+            return false;
         
         user.Transactions.Add(transaction);
         await _dataContext.SaveChangesAsync();
 
-        return transaction;
+        return true;
     }
 
     public async Task<Transaction?> UpdateUserTransactionAsync(int userId, Transaction updatedTransaction)
@@ -88,8 +91,7 @@ public class UserRepository : IUserRepository
         if (user == null)
             return null;
 
-        var updateIndex = user.Transactions.FindIndex(t => t.Id == updatedTransaction.Id);
-        user.Transactions[updateIndex] = updatedTransaction;
+        _dataContext.Transactions.Update(updatedTransaction);
         await _dataContext.SaveChangesAsync();
 
         return updatedTransaction;

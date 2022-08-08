@@ -12,7 +12,7 @@ public interface IUserRepository
     
     Task<IEnumerable<Transaction>> GetUserTransactionsAsync(int userId);
     Task<Transaction?> GetUserTransactionAsync(int userId, int transactionId);
-    Task<Transaction?> CreateUserTransactionAsync(int userId, Transaction transaction);
+    Task<bool> CreateUserTransactionAsync(int userId, Transaction transaction);
     Task<Transaction?> UpdateUserTransactionAsync(int userId, Transaction updatedTransaction);
     Task<Transaction?> DeleteUserTransactionAsync(int userId, int transactionId);
 }
