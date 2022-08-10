@@ -33,7 +33,8 @@ public class CoinRepository : ICoinRepository
         // Multiple options to update resource
         
         // 1) Use AsNoTracking (current implementation)
-        if (await GetCoinByIdAsync(updatedCoin.Id) == null)
+        var coinToUpdate = await GetCoinByIdAsync(updatedCoin.Id);
+        if (coinToUpdate == null)
             return false;
         
         _dataContext.Coins.Update(updatedCoin);
@@ -55,7 +56,6 @@ public class CoinRepository : ICoinRepository
     public async Task<bool> DeleteCoinAsync(int coinId)
     {
         var coinToDelete = await _dataContext.Coins.FindAsync(coinId);
-
         if (coinToDelete == null)
             return false;
 

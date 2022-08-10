@@ -40,7 +40,6 @@ public class UserRepository : IUserRepository
     public async Task<bool> UpdateUserAsync(User updatedUser)
     {
         var userToUpdate = await GetUserByIdAsync(updatedUser.Id);
-        
         if (userToUpdate == null)
             return false;
 
@@ -53,7 +52,6 @@ public class UserRepository : IUserRepository
     public async Task<bool> DeleteUserAsync(int userId)
     {
         var userToDelete = await GetUserByIdAsync(userId);
-
         if (userToDelete == null)
             return false;
 
@@ -78,7 +76,6 @@ public class UserRepository : IUserRepository
     public async Task<bool> CreateUserTransactionAsync(int userId, Transaction transaction)
     {
         var user = await GetUserWithTransactionByIdAsync(userId);
-
         if (user == null)
             return false;
         
@@ -91,7 +88,6 @@ public class UserRepository : IUserRepository
     public async Task<Transaction?> UpdateUserTransactionAsync(int userId, Transaction updatedTransaction)
     {
         var user = await GetUserWithTransactionByIdAsync(userId);
-        
         if (user == null)
             return null;
 
