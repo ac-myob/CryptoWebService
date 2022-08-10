@@ -33,7 +33,7 @@ public class UserRepository : IUserRepository
 
     public async Task CreateUserAsync(User user)
     {
-        _dataContext.Add(user);
+        _dataContext.Users.Add(user);
         await _dataContext.SaveChangesAsync();
     }
 
@@ -73,13 +73,14 @@ public class UserRepository : IUserRepository
             .SingleOrDefaultAsync(t => t.UserId == userId && t.Id == transactionId);
     }
 
-    public async Task<bool> CreateUserTransactionAsync(int userId, Transaction transaction)
+    public async Task<bool> CreateUserTransactionAsync(int userId, Transaction createdTransaction)
     {
         var user = await GetUserWithTransactionByIdAsync(userId);
         if (user == null)
             return false;
-        
-        user.Transactions.Add(transaction);
+
+        createdTransaction.UserId = userId;
+        _dataContext.Transactions.Add(createdTransaction);
         await _dataContext.SaveChangesAsync();
 
         return true;
@@ -91,6 +92,7 @@ public class UserRepository : IUserRepository
         if (user == null)
             return null;
 
+        updatedTransaction.UserId = userId;
         _dataContext.Transactions.Update(updatedTransaction);
         await _dataContext.SaveChangesAsync();
 
