@@ -23,6 +23,14 @@ public class UserRepository : IUserRepository
         return await _dataContext.Users.AsNoTracking().SingleOrDefaultAsync(u => u.Id == userId);
     }
 
+    public async Task<User?> GetUserWithTransactionByIdAsync(int userId)
+    {
+        return await _dataContext.Users
+            .Include(u => u.Transactions)
+            .AsNoTracking()
+            .SingleOrDefaultAsync(u => u.Id == userId);
+    }
+
     public async Task CreateUserAsync(User user)
     {
         _dataContext.Add(user);
@@ -69,9 +77,7 @@ public class UserRepository : IUserRepository
 
     public async Task<bool> CreateUserTransactionAsync(int userId, Transaction transaction)
     {
-        var user = await _dataContext.Users
-            .Include(u => u.Transactions)
-            .SingleOrDefaultAsync(u => u.Id == userId);
+        var user = await GetUserWithTransactionByIdAsync(userId);
 
         if (user == null)
             return false;
@@ -84,9 +90,7 @@ public class UserRepository : IUserRepository
 
     public async Task<Transaction?> UpdateUserTransactionAsync(int userId, Transaction updatedTransaction)
     {
-        var user = await _dataContext.Users
-            .Include(u => u.Transactions)
-            .SingleOrDefaultAsync(u => u.Id == userId);
+        var user = await GetUserWithTransactionByIdAsync(userId);
         
         if (user == null)
             return null;

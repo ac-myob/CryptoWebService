@@ -14,12 +14,12 @@ public class CoinRepository : ICoinRepository
     
     public async Task<IEnumerable<Coin>> GetAllCoinsAsync()
     {
-        return await _dataContext.Coins.ToListAsync();
+        return await _dataContext.Coins.AsNoTracking().ToListAsync();
     }
 
     public async Task<Coin?> GetCoinByIdAsync(int coinId)
     {
-        return await _dataContext.Coins.FindAsync(coinId);
+        return await _dataContext.Coins.AsNoTracking().SingleOrDefaultAsync(c => c.Id == coinId);
     }
 
     public async Task CreateCoinAsync(Coin coin)
@@ -30,6 +30,9 @@ public class CoinRepository : ICoinRepository
 
     public async Task<bool> UpdateCoinAsync(Coin updatedCoin)
     {
+        // Multiple options to update resource
+        
+        // 1) Use AsNoTracking (current implementation)
         if (await GetCoinByIdAsync(updatedCoin.Id) == null)
             return false;
         
@@ -37,6 +40,16 @@ public class CoinRepository : ICoinRepository
         await _dataContext.SaveChangesAsync();
 
         return true;
+        
+        // 2) Use SetValues
+        // var coinToUpdate = await GetCoinByIdAsync(updatedCoin.Id);
+        // if (coinToUpdate == null)
+        //     return false;
+        //
+        // _dataContext.Entry(coinToUpdate).CurrentValues.SetValues(updatedCoin);
+        // await _dataContext.SaveChangesAsync();
+        //
+        // return true;
     }
 
     public async Task<bool> DeleteCoinAsync(int coinId)
