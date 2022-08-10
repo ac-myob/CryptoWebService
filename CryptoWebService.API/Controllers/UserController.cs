@@ -23,7 +23,7 @@ public class UserController : Controller
     public async Task<ActionResult<IEnumerable<UserGetDto>>> GetAllUsers()
     {
         var users = await _userRepository.GetAllUsersAsync();
-        var userGetDtos = _mapper.Map<IEnumerable<CoinGetDto>>(users);
+        var userGetDtos = _mapper.Map<IEnumerable<UserGetDto>>(users);
 
         return Ok(userGetDtos);
     }    
@@ -84,5 +84,18 @@ public class UserController : Controller
         var transactionGetDto = _mapper.Map<TransactionGetDto>(transactionDomain);
         
         return Ok(transactionGetDto);
+    }
+    
+    [HttpPost("{userId:int}/transactions")]
+    public async Task<ActionResult<TransactionGetDto>> CreateUserTransaction(
+        int userId, [FromBody] TransactionPostPutDto transactionPostDto)
+    {
+        var transactionDomain = _mapper.Map<Transaction>(transactionPostDto);
+        var createIsSuccessful = await _userRepository.CreateUserTransactionAsync(userId, transactionDomain);
+        if (!createIsSuccessful)
+            return NotFound();
+        var transactionGetDtos = _mapper.Map<TransactionGetDto>(transactionDomain);
+        
+        return Ok(transactionGetDtos);
     }
 }
