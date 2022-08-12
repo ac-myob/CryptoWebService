@@ -1,6 +1,6 @@
 namespace CryptoWebService.Domain.Models;
 
-public class User
+public class User : IEntity<int>
 {
     public int Id { get; set; }
     public string FirstName { get; set; }
