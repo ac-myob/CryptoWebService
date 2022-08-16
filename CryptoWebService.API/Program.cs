@@ -20,6 +20,9 @@ builder.Services.AddSwaggerGen();
 // Validation
 builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<CoinPostPutDto>();
+builder.Services.AddValidatorsFromAssemblyContaining<TransactionPostPutDto>();
+builder.Services.AddValidatorsFromAssemblyContaining<TransactionGetDto>();
+builder.Services.AddValidatorsFromAssemblyContaining<UserPostPutDto>();
 
 // Repositories/Services
 builder.Services.AddScoped<IRepository<Coin, int>, CoinRepository>();

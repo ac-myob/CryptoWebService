@@ -16,6 +16,6 @@ public class CoinPostPutDtoValidator : AbstractValidator<CoinPostPutDto>
         RuleFor(c => c.Symbol)
             .NotEmpty().NotNull()
             .Must(symbol => symbol.All(char.IsUpper))
-            .WithMessage("Coin symbol must be in capital letters.");;
+            .WithMessage(c => $"Coin symbol '{c.Symbol}' must be in capital letters.");;
     }
 }

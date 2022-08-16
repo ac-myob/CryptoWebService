@@ -34,6 +34,8 @@ public class TransactionService : ITransactionService
         if (! await IsTransactionValid(transaction.CoinId, transaction.UserId))
             return false;
 
+        transaction.Date = DateTime.Now;
+        
         await _transactionRepository.CreateAsync(transaction);
 
         return true;
