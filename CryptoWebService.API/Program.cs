@@ -1,3 +1,5 @@
+using CryptoWebService.Application.Abstractions;
+using CryptoWebService.Domain.Models;
 using CryptoWebService.Infrastructure;
 using CryptoWebService.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +13,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // builder.Services.AddScoped<RepositoryBase<Coin, int>, CoinRepository>();
-builder.Services.AddScoped<CoinRepository>();
-builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<IRepository<Coin, int>, CoinRepository>();
+builder.Services.AddScoped<IRepository<User, int>, UserRepository>();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddDbContext<DataContext>(options =>
     // options.UseNpgsql("Server=localhost;Port=5432;Database=CryptoDatabase;User Id=Andrew.Christabel;Password=;")

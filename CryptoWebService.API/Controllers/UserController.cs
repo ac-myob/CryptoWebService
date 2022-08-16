@@ -1,5 +1,6 @@
 using AutoMapper;
 using CryptoWebService.API.Dtos;
+using CryptoWebService.Application.Abstractions;
 using CryptoWebService.Domain.Models;
 using CryptoWebService.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,10 @@ namespace CryptoWebService.API.Controllers;
 [Route("api/[controller]")]
 public class UserController : Controller
 {
-    private readonly UserRepository _userRepository;
+    private readonly IRepository<User, int> _userRepository;
     private readonly IMapper _mapper;
 
-    public UserController(UserRepository userRepository, IMapper mapper)
+    public UserController(IRepository<User, int> userRepository, IMapper mapper)
     {
         _userRepository = userRepository;
         _mapper = mapper;
