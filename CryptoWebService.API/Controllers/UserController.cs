@@ -2,7 +2,6 @@ using AutoMapper;
 using CryptoWebService.API.Dtos;
 using CryptoWebService.Application.Abstractions;
 using CryptoWebService.Domain.Models;
-using CryptoWebService.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CryptoWebService.API.Controllers;
@@ -67,49 +66,4 @@ public class UserController : Controller
 
         return deleteIsSuccessful ? NoContent() : NotFound();
     }
-
-    // [HttpGet("{userId:int}/transactions")]
-    // public async Task<ActionResult<IEnumerable<TransactionGetDto>>> GetUserTransactions(int userId)
-    // {
-    //     var transactionDomains = await _userRepository.GetUserTransactionsAsync(userId);
-    //     var transactionGetDtos = _mapper.Map<IEnumerable<TransactionGetDto>>(transactionDomains);
-    //     
-    //     return Ok(transactionGetDtos);
-    // }
-    //
-    // [HttpGet("{userId:int}/transactions/{transactionId:int}")]
-    // public async Task<ActionResult<TransactionGetDto>> GetUserTransaction(int userId, int transactionId)
-    // {
-    //     var transactionDomain = await _userRepository.GetUserTransactionAsync(userId, transactionId);
-    //     var transactionGetDto = _mapper.Map<TransactionGetDto>(transactionDomain);
-    //     
-    //     return Ok(transactionGetDto);
-    // }
-    //
-    // // localhost:3000/user/{userId}/transactions
-    // [HttpPost("{userId:int}/transactions")]
-    // public async Task<ActionResult<TransactionGetDto>> CreateUserTransaction(
-    //     int userId, [FromBody] TransactionPostPutDto transactionPostDto)
-    // {
-    //     var transactionDomain = _mapper.Map<Transaction>(transactionPostDto);
-    //     var createIsSuccessful = await _userRepository.CreateUserTransactionAsync(userId, transactionDomain);
-    //     if (!createIsSuccessful)
-    //         return BadRequest();
-    //     var transactionGetDtos = _mapper.Map<TransactionGetDto>(transactionDomain);
-    //     
-    //     return Ok(transactionGetDtos);
-    // }
-    //
-    // [HttpPut("{userId:int}/transactions")]
-    // public async Task<ActionResult<TransactionGetDto>> UpdateUserTransaction(
-    //     int userId, [FromBody] TransactionPostPutDto transactionPostDto)
-    // {
-    //     var transactionDomain = _mapper.Map<Transaction>(transactionPostDto);
-    //     var updateIsSuccessful = await _userRepository.UpdateUserTransactionAsync(userId, transactionDomain);
-    //     if (!updateIsSuccessful)
-    //         return BadRequest();
-    //     var transactionGetDtos = _mapper.Map<TransactionGetDto>(transactionDomain);
-    //     
-    //     return Ok(transactionGetDtos);
-    // }
 }
