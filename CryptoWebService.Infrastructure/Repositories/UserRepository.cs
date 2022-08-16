@@ -4,7 +4,7 @@ namespace CryptoWebService.Infrastructure.Repositories;
 
 public class UserRepository : RepositoryBase<User, int>
 {
-    public UserRepository(DataContext dataContext) : base(dataContext, dataContext.Users) { }
+    public UserRepository(DataContext dataContext) : base(dataContext) { }
 
     // public async Task<IEnumerable<Transaction>> GetUserTransactionsAsync(int userId)
     // {

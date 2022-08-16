@@ -11,10 +11,10 @@ public class RepositoryBase<TEntities, TKey> : IRepository<TEntities, TKey>
     private readonly DbContext _dbContext;
     private readonly DbSet<TEntities> _entities;
 
-    protected RepositoryBase(DbContext dbContext, DbSet<TEntities> entities)
+    protected RepositoryBase(DbContext dbContext)
     {
         _dbContext = dbContext;
-        _entities = entities;
+        _entities = _dbContext.Set<TEntities>();
     }
     
     public async Task<IEnumerable<TEntities>> GetAllAsync()
@@ -47,11 +47,11 @@ public class RepositoryBase<TEntities, TKey> : IRepository<TEntities, TKey>
 
     public async Task<bool> DeleteAsync(TKey id)
     {
-        var coinToDelete = await _entities.FindAsync(id);
-        if (coinToDelete == null)
+        var entityToDelete = await _entities.FindAsync(id);
+        if (entityToDelete == null)
             return false;
 
-        _entities.Remove(coinToDelete);
+        _entities.Remove(entityToDelete);
         await _dbContext.SaveChangesAsync();
 
         return true;

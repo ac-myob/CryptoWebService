@@ -4,5 +4,5 @@ namespace CryptoWebService.Infrastructure.Repositories;
 
 public class CoinRepository : RepositoryBase<Coin, int>
 {
-    public CoinRepository(DataContext dataContext) : base(dataContext, dataContext.Coins) { }
+    public CoinRepository(DataContext dataContext) : base(dataContext) { }
 }
