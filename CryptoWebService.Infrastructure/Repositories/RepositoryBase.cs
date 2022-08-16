@@ -38,7 +38,8 @@ public class RepositoryBase<TEntities, TKey> : IRepository<TEntities, TKey>
         var entityToUpdate = await GetByIdAsync(id);
         if (entityToUpdate == null)
             return false;
-        
+
+        updatedEntity.Id = id;
         _entities.Update(updatedEntity);
         await _dbContext.SaveChangesAsync();
 
