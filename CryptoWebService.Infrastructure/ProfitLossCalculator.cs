@@ -22,8 +22,9 @@ public class ProfitLossCalculator : IProfitLossCalculator
                     var latestBoughtTransaction = boughtTransactions.Peek();
                     if (transaction.Quantity > latestBoughtTransaction.Quantity)
                         boughtTransactions.Dequeue();
+                    
+                    netProfitLoss += (transaction.Price - latestBoughtTransaction.Price) * transaction.Quantity;
                     transaction.Quantity -= Math.Min(latestBoughtTransaction.Quantity, transaction.Quantity);
-                    netProfitLoss += (latestBoughtTransaction.Price - transaction.Price) * transaction.Price;
                 }
         }
 

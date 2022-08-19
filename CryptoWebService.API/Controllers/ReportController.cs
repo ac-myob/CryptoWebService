@@ -15,7 +15,7 @@ public class ReportController : Controller
     }
 
     [HttpGet]
-    public async Task<ActionResult<double>> GetReport(DateTime startDate, DateTime endDate, int userId, int coinId)
+    public async Task<ActionResult<double>> GetProfitLoss(DateTime startDate, DateTime endDate, int userId, int coinId)
     {
         return Ok(await _reportService.GetCoinProfitLossAsync(startDate, endDate, userId, coinId));
     }

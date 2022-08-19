@@ -29,6 +29,8 @@ builder.Services.AddScoped<IRepository<Coin, int>, CoinRepository>();
 builder.Services.AddScoped<IRepository<User, int>, UserRepository>();
 builder.Services.AddScoped<IRepository<Transaction, int>, TransactionRepository>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddSingleton<IProfitLossCalculator, ProfitLossCalculator>();
 
 // DTO mapping
 builder.Services.AddAutoMapper(typeof(Program));
