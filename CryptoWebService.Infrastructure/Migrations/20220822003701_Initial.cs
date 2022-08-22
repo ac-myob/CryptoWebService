@@ -46,6 +46,7 @@ namespace CryptoWebService.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TransactionType = table.Column<int>(type: "integer", nullable: false),
                     Quantity = table.Column<double>(type: "double precision", nullable: false),
                     Price = table.Column<double>(type: "double precision", nullable: false),
                     Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),

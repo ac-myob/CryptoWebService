@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CryptoWebService.Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220805024111_Initial")]
+    [Migration("20220822003701_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -65,6 +65,9 @@ namespace CryptoWebService.Infrastructure.Migrations
 
                     b.Property<double>("Quantity")
                         .HasColumnType("double precision");
+
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("integer");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
