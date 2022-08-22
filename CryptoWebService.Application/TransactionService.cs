@@ -8,15 +8,18 @@ public class TransactionService : ITransactionService
     private readonly IRepository<Transaction, int> _transactionRepository;
     private readonly IRepository<Coin, int> _coinRepository;
     private readonly IRepository<User, int> _userRepository;
+    private readonly IDateTimeProvider _dateTimeProvider;
 
     public TransactionService(
         IRepository<Transaction, int> transactionRepository, 
         IRepository<Coin, int> coinRepository,
-        IRepository<User, int> userRepository)
+        IRepository<User, int> userRepository,
+        IDateTimeProvider dateTimeProvider)
     {
         _transactionRepository = transactionRepository;
         _coinRepository = coinRepository;
         _userRepository = userRepository;
+        _dateTimeProvider = dateTimeProvider;
     }
     
     public async Task<IEnumerable<Transaction>> GetAllAsync()
@@ -34,8 +37,8 @@ public class TransactionService : ITransactionService
         if (! await IsTransactionValid(transaction.CoinId, transaction.UserId))
             return false;
 
-        transaction.Date = DateTime.Now;
-        
+        transaction.Date = _dateTimeProvider.GetNow().ToUniversalTime();
+
         await _transactionRepository.CreateAsync(transaction);
 
         return true;

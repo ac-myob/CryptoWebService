@@ -30,15 +30,18 @@ builder.Services.AddScoped<IRepository<User, int>, UserRepository>();
 builder.Services.AddScoped<IRepository<Transaction, int>, TransactionRepository>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<IReportService, ReportService>();
+
+// Business logic
 builder.Services.AddSingleton<IProfitLossCalculator, ProfitLossCalculator>();
+builder.Services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
 
 // DTO mapping
 builder.Services.AddAutoMapper(typeof(Program));
 
 // DbContext
 builder.Services.AddDbContext<DataContext>(options =>
-    // options.UseNpgsql("Server=localhost;Port=5432;Database=CryptoDatabase;User Id=Andrew.Christabel;Password=;")
-    options.UseInMemoryDatabase("CryptoDatabase"));
+    options.UseNpgsql("Server=localhost;Port=5432;Database=CryptoDatabase;User Id=Andrew.Christabel;Password=;"));
+    // options.UseInMemoryDatabase("CryptoDatabase"));
 
 
 var app = builder.Build();
