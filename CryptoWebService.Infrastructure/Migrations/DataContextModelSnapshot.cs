@@ -63,6 +63,9 @@ namespace CryptoWebService.Infrastructure.Migrations
                     b.Property<double>("Quantity")
                         .HasColumnType("double precision");
 
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("integer");
+
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
