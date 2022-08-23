@@ -34,7 +34,7 @@ public class CoinController : Controller
         var coin = await _coinRepository.GetByIdAsync(coinId);
 
         if (coin == null)
-            return NotFound();
+            return NotFound($"Cannot find coin with id {coinId}.");
 
         var coinGetDto = _mapper.Map<CoinGetDto>(coin);
         return Ok(coinGetDto);
