@@ -24,11 +24,13 @@ public class CoinControllerTests
     }
 
     [Theory]
-    [MemberData(nameof(GetAllCoinsTestData))]
-    public async void GetAllCoins_ReturnsAllCoinsInRepositoryWithStatusCode200(IEnumerable<Coin> coins)
+    [InlineData(0)]
+    [InlineData(3)]
+    public async Task GetAllCoins_ReturnsAllCoinsInRepositoryWithStatusCode200(int numberOfCoins)
     {
-        _mockCoinRepository.Setup(f => f.GetAllAsync()).ReturnsAsync(coins);
-        var expectedCoinDtos = _mapper.Map<IEnumerable<CoinGetDto>>(coins);
+        var expectedCoins = SampleCoins.GetMany(numberOfCoins);
+        _mockCoinRepository.Setup(f => f.GetAllAsync()).ReturnsAsync(expectedCoins);
+        var expectedCoinDtos = _mapper.Map<IEnumerable<CoinGetDto>>(expectedCoins);
         
         var result = await _coinController.GetAllCoins();
         var actionResult = Assert.IsType<ActionResult<IEnumerable<CoinGetDto>>>(result);
@@ -38,16 +40,10 @@ public class CoinControllerTests
         actualCoinGetDtos.Should().BeEquivalentTo(expectedCoinDtos);
     }
 
-    private static IEnumerable<object[]> GetAllCoinsTestData()
-    {
-        yield return new object[] { Array.Empty<Coin>() };
-        yield return new object[] { new [] { SampleCoins.First, SampleCoins.Fifth }};
-    }
-
     [Fact]
-    public async void GetCoinById_ReturnsCoinWithMatchingIdWithStatusCode200_GivenCoinId()
+    public async Task GetCoinById_ReturnsCoinWithMatchingIdWithStatusCode200_GivenCoinId()
     {
-        var expectedCoin = SampleCoins.First;
+        var expectedCoin = SampleCoins.GetOne();
         _mockCoinRepository.Setup(f => f.GetByIdAsync(expectedCoin.Id))
             .ReturnsAsync(expectedCoin);
         var expectedCoinGetDto = _mapper.Map<CoinGetDto>(expectedCoin);
@@ -61,7 +57,7 @@ public class CoinControllerTests
     }
     
     [Fact]
-    public async void GetCoinById_ReturnsStatusCode404_GivenNonExistentCoinId()
+    public async Task GetCoinById_ReturnsStatusCode404_GivenNonExistentCoinId()
     {
         _mockCoinRepository.Setup(f => f.GetByIdAsync(1)).ReturnsAsync((Coin?) null);
         var result = await _coinController.GetCoinById(1);

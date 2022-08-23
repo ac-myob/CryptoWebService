@@ -4,9 +4,11 @@ namespace CryptoWebService.Tests;
 
 public static class SampleCoins
 {
-    public static Coin First => new() {Id = 1, Name = "Bitcoin", Symbol = "BTC"};
-    public static Coin Second => new() {Id = 2, Name = "Ethereum", Symbol = "ETH"};
-    public static Coin Third => new() {Id = 3, Name = "Cardano", Symbol = "ADA"};
-    public static Coin Fourth => new() {Id = 4, Name = "Polygon", Symbol = "MATIC"};
-    public static Coin Fifth => new() {Id = 5, Name = "Polkadot", Symbol = "DOT"};
+    public static Coin GetOne() => new() {Id = 1, Name = "SingleCoin", Symbol = "X"};
+
+    public static IEnumerable<Coin> GetMany(int numberOfCoins)
+    {
+        return Enumerable.Range(1, numberOfCoins + 1)
+            .Select(i => new Coin {Id = i, Name = $"Coin{i}", Symbol = $"COIN{i}"});
+    }
 }
